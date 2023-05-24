@@ -1,4 +1,4 @@
-
+//CAUTION, TRASH CODE
 
 use std::{fs::File, io::Write};
 
@@ -23,7 +23,7 @@ pub fn obfuscate(_attr: TokenStream, item: TokenStream) -> TokenStream {
 fn generate_dead_code() -> Block {
     let mut rng = rand::thread_rng();
 
-    let num_functions = rng.gen_range(10000..10010);
+    let num_functions = rng.gen_range(10000..10010); //change this value to generate as much dead code as you want
     let mut code = String::from("{\n");
     let mut generated_functions = Vec::new();
 
@@ -98,8 +98,8 @@ fn generate_dead_code() -> Block {
 
     code.push_str("}\n");
 
-    let mut file = File::create("new.rs").unwrap();
-    file.write_all(code.as_bytes()).unwrap();
+    //let mut file = File::create("new.rs").unwrap(); //debug option to see generated dead code
+    //file.write_all(code.as_bytes()).unwrap();
     let dead_code: Block = parse_str(&code).expect("Unable to parse block");
 
     dead_code
