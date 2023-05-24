@@ -20,8 +20,6 @@ pub fn obfuscate(_attr: TokenStream, item: TokenStream) -> TokenStream {
     TokenStream::from(quote! { #input })
 }
 
-// Your existing dead code generation code would go here, modified to return Block instead of syn::Block
-// Your existing dead code generation code would go here, modified to return Block instead of syn::Block
 fn generate_dead_code() -> Block {
     let mut rng = rand::thread_rng();
 
