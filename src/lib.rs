@@ -1,4 +1,4 @@
-//CAUTION, TRASH CODE
+//Trash code
 
 use std::{fs::File, io::Write};
 
@@ -20,10 +20,11 @@ pub fn obfuscate(_attr: TokenStream, item: TokenStream) -> TokenStream {
     TokenStream::from(quote! { #input })
 }
 
+// Your existing dead code generation code would go here, modified to return Block instead of syn::Block
 fn generate_dead_code() -> Block {
     let mut rng = rand::thread_rng();
 
-    let num_functions = rng.gen_range(10000..10010); //change this value to generate as much dead code as you want
+    let num_functions = rng.gen_range(1000..2000);
     let mut code = String::from("{\n");
     let mut generated_functions = Vec::new();
 
@@ -48,6 +49,26 @@ fn generate_dead_code() -> Block {
             _ => "/", 
         };
 
+        let nested_ifs = if rng.gen_bool(0.4) {  // 20% chance of adding a nested if
+            let operation_nested = match rng.gen_range(0..1) {
+                0 => "+",
+                1 => "-",
+                2 => "*",
+                _ => "/", 
+            };
+
+            format!("
+                if x < y {{
+                    x {} y
+                }} else if x > y {{
+                    y {} x
+                }} else {{
+                    x {} y
+                }}", operation, operation_nested, operation_nested)
+        } else {
+            format!("x {} y", operation)
+        };
+
         let function_declaration = if rng.gen_bool(0.5) && i != 0 {
             let previous_function_index = rng.gen_range(0..i);
             let previous_function_name = &generated_functions[previous_function_index];
@@ -59,15 +80,15 @@ fn generate_dead_code() -> Block {
         } else {
             format!("
                 fn {}(x: usize, y: usize) -> usize {{
-                    x {} y
-                }}\n", function_name, operation)
+                    {}
+                }}\n", function_name, nested_ifs)
         };
 
         code.push_str(&function_declaration);
     }
 
     // Generate complex control structures
-    for _ in 0..rng.gen_range(0..50) {
+    for _ in 0..rng.gen_range(300..600) {
         let index = rng.gen_range(0..generated_functions.len());
         let function_name = &generated_functions[index];
 
@@ -98,8 +119,8 @@ fn generate_dead_code() -> Block {
 
     code.push_str("}\n");
 
-    //let mut file = File::create("new.rs").unwrap(); //debug option to see generated dead code
-    //file.write_all(code.as_bytes()).unwrap();
+    let mut file = File::create("new.rs").unwrap();
+    file.write_all(code.as_bytes()).unwrap();
     let dead_code: Block = parse_str(&code).expect("Unable to parse block");
 
     dead_code
