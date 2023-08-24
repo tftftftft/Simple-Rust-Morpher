@@ -6,5 +6,4 @@ It can be used to make your Rust code more difficult to understand and reverse e
 
 Generates dead code, disable rust optimization to save obfuscation.
 
-
-TRASH CODE, YOU BETTER FORK AND MODIFY FOR YOURSELF
+POC ONLY!
